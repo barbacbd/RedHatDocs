@@ -1,0 +1,23 @@
+apiVersion: v1
+baseDomain: installer.gcp.devcluster.openshift.com
+credentialsMode: Passthrough
+compute:
+- architecture: amd64
+  hyperthreading: Enabled
+  name: worker
+  platform: {}
+  replicas: 3
+controlPlane:
+  architecture: amd64
+  hyperthreading: Enabled
+  name: master
+  platform: {}
+  replicas: 3
+metadata:
+  creationTimestamp: null
+  name: bbarbach-dev-xpn
+platform:
+  gcp:
+    projectID: openshift-installer-shared-vpc
+    region: us-east1
+publish: External

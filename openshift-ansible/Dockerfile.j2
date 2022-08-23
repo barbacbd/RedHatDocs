@@ -1,0 +1,28 @@
+from fedora:latest
+
+# Not building secrets and keys into the DOCKERFILE so that the
+# user is forced to copy their own over in the future. These values
+# can change and thus should not be added here even in a generic fashion
+
+# update and install new packages
+RUN yum update -y
+RUN yum install -y jq wget ncurses
+
+# Grab the openshift client, unpack it and move it to the bin for use
+RUN wget https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz && tar -xvzf openshift-client-linux.tar.gz && cp oc /usr/bin/
+
+# set the cluster directory where the information will be used for the installer
+ADD install.sh /install.sh
+
+# run the configuration script each time that you start a container. This will setup the
+# container with the correct information
+ADD configure.sh /configure.sh
+
+RUN mkdir /cluster
+ADD install-config.yaml /cluster/install-config.yaml
+
+# move all of the ssh keys over to the image 
+ADD ~/.ssh/ /.ssh
+
+RUN cp /.ssh/{{ PUBLIC_KEY_FILENAME }} /.ssh/oi.pub
+RUN cp /.ssh/{{ PRIVATE_KEY_FILENAME }} /.ssh/oi

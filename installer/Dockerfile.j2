@@ -1,0 +1,35 @@
+from fedora:latest
+
+# Not building secrets and keys into the DOCKERFILE so that the
+# user is forced to copy their own over in the future. These values
+# can change and thus should not be added here even in a generic fashion
+
+# update and install new packages
+RUN yum update -y
+RUN yum install -y jq wget ncurses emacs openssl openssh-clients
+
+RUN wget https://raw.githubusercontent.com/barbacbd/tools/main/references/installer/OpenshiftPuller.sh
+RUN wget https://raw.githubusercontent.com/barbacbd/tools/main/references/installer/InstallerPuller.sh
+
+RUN chmod 777 OpenshiftPuller.sh
+RUN bash -c "./OpenshiftPuller.sh {{ OC_VERSION }} {{ BIN_DIR }}"
+
+RUN chmod 777 InstallerPuller.sh
+RUN bash -c "./InstallerPuller.sh {{ INSTALLER_VERSION }} {{ BIN_DIR }}"
+
+# run the configuration script each time that you start a container. This will setup the
+# container with the correct information
+ADD configure.sh /configure.sh
+RUN chmod 777 /configure.sh
+RUN ./configure.sh
+
+ADD install-config.yaml /install-config.yaml
+
+# move the ssh key over to the image
+RUN mkdir -p /root/.ssh
+ADD id_rsa.pub /root/.ssh/id_rsa.pub
+RUN chmod -R 600 /root/.ssh
+
+# move the cloud credentials directory over to the image.
+RUN mkdir /.{{ CLOUD_CREDS_DIR }}
+COPY {{ CLOUD_CREDS_DIR }} /.{{ CLOUD_CREDS_DIR }}
