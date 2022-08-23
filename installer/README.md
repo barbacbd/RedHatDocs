@@ -3,7 +3,6 @@
 - [gcp](./gcp) - Directory containing information for installer gp clusters.
 - [scripts](./scripts) - Directory containing general installer scripts.
 - [secrets](./secrets) - Directory containing information relavant to obtaining and using pull secrets for the installer.
-- [upi](./upi) - Directoru containing information for installer UPI clusters.
 - This directory contains the information and scripts to generate a docker/podman image for the installer.
 
 # Instructions and Notes for Creating a cluster with Openshift Installer
