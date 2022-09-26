@@ -110,7 +110,7 @@ The following is the same as `export key=value`
 
 - aws
 - gcp
-
+- azure
 
 # OC References
 
