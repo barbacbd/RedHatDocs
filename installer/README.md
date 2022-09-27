@@ -128,3 +128,6 @@ openshift-install create cluster
 
 The release-image can be found [here](https://amd64.ocp.releases.ci.openshift.org/). Look at the top of the web page for the image name.
 Generally the line will include `oc adm release extract`, but you only need the image link at the tail end of the line.
+
+
+If you would like to create a bastion host to reach the rest of the cluster [follow these directions](https://github.com/eparis/ssh-bastion). Do _NOT_ skip the steps for passing your ssh credentials to the other nodes in the cluster or you will not be able to ssh from the bastion to other nodes.
