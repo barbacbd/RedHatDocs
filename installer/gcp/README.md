@@ -108,7 +108,43 @@ publish: External
 
 ### Private Cluster
 
-_under construction_
+To create a private cluster, a few components needs to be in place before the installation begins.
+
+- VPC
+- Subnets
+- Cloud Router
+- Cloud NAT
+
+**Note**: _All of these resources must exist in the project where the cluster will be installed_.
+
+<br>
+If a VPC does _not_ exist, then create a VPC and name it whatever you choose. Ensure that a subnet is created for the region where you intend to install. The easiest method to complete this task is by selecting the option `Automatic` for `Subnet Creation Mode` when creating a VPC Network.
+<br>
+A Cloud Router resource must be created in the region that is intended for installation. A Cloud NAT resource must also be created and associated with the Cloud Router and VPC that were created in the previous steps.
+<br>
+The default install configuration file sets the following information:
+
+```yaml
+networking:
+  clusterNetwork:
+  - cidr: 10.128.0.0/14
+    hostPrefix: 23
+  machineNetwork:
+  - cidr: 10.0.0.0/16
+```
+
+The machine network value must be altered to machine the value for the subnet with the matching region. For instance a subnet with the value `10.128.0.0/20` could have the cluster and machine network values adjusted similar to the snippet below. Notice that the cluster network value is adjusted as it was going to overlap with the machine network.
+
+```yaml
+networking:
+  clusterNetwork:
+  - cidr: 10.124.0.0/14
+    hostPrefix: 23
+  machineNetwork:
+  - cidr: 10.128.0.0/16
+```
+
+**Note**: _The machine and cluster network cannot overlap_.
 
 <br><br>
 
