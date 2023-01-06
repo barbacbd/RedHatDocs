@@ -145,6 +145,16 @@ networking:
 ```
 
 **Note**: _The machine and cluster network cannot overlap_.
+<br>
+
+A problem still arises with private clusters; private clusters do not have access to the required data (urls) required for installation. To solve this issue, setup a VM in GCP. The new VM _should_ use the same network that the cluster is going to use. The VM acts as a bridge between the private cluster and the internet. Add the following information to the VM either during initialization or after creation:
+
+- ssh keys
+- GCP service account
+- GCP credentials (osServiceAccount.json)
+- installer executable (add to /usr/bin)
+- secrets data for installation (secrets/pull-secrets.txt)
+
 
 <br><br>
 
