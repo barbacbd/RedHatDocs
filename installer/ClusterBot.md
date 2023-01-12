@@ -26,7 +26,7 @@ The build image cannot be pulled since the permissions have (probably) not been 
 
 ## Add the Pull Secret
 
-Visit the [link](https://docs.ci.openshift.org/docs/getting-started/useful-links/#clusters) at the top of this page. Click on the registry on the page. Following the example above, `build05` would be selected where you would be taken to a page similar to the image below.
+Visit the [link](https://docs.ci.openshift.org/docs/getting-started/useful-links/#clusters) at the top of this page. Click on the registry on the page. Following the example above, `build05` would be selected where you would be taken to a page similar to the image below. If you cannot find the link at the top of the listed page, please visit [this page](https://console-openshift-console.apps.build05.l9oh.p1.openshiftapps.com/k8s/all-namespaces/secrets) directly.
 
 <h1 align="center">
     <img src=".images/RegistryHomePage.png"/>
