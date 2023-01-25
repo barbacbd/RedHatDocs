@@ -13,13 +13,16 @@ See the following Projects for references that will be mentioned throughout this
 - [Openshift Installer](https://github.com/openshift/installer)
 - [Openshift Ansible](https://github.com/openshift/openshift-ansible)
 
+# Supported Platforms
+
+- AWS
 
 # Process
 
 1. Make a directory called `assets` in `oi-dev`
 
-The assets directory is the default where the installation should occur for the `oi-dev` project to
-utilize openshift-installer information.
+The assets directory is the default where the installation should occur for the `oi-dev` project to utilize openshift-installer information.
+<br>
 
 2. Ensure that there is an ssh key called `oi`.
 
@@ -27,9 +30,9 @@ There should be a matching public key called `oi.pub`. It is ok to **copy** the
 ssh key that you normally use. DO NOT sim-link the keys as this could create issues if you
 ever remove the keys or change them.
 
-**NOTE**: If the key in OI is the same as the one used for the openshift installer create cluster, then
-this process will go smoother. 
+**Note**: _If the key in OI is the same as the one used for the openshift installer create cluster, then this process will go smoother_. 
 
+<br>
 
 3. Create a cluster using openshift-installer or using the oi.sh script
 
@@ -66,6 +69,7 @@ platform:
 ```
 
 Move to the oi-dev directory and run `scripts/oi.sh`.
+<br>
 
 4. Add the openshift-installer bin to the path [OPTIONAL]
 
@@ -104,21 +108,21 @@ Now `oc` will be the version that you want it to be.
 
 6. Setting up the environment
 
-**NOTE:** Using `ansible==2.9.27` failed. Remove this from the computer (at least for now).
+**Note:** _Using `ansible==2.9.27` failed. Remove this from the computer (at least for now)_.
 
 Install `libselinux-python3` via yum. This will be picked up as a pip package that you can see as version (>=2.9) via pip3 list. **If you install directly with pip, the version is VERY different.**
 
 Create a virtual environment for python3
 
 ```
-python3 -m venv ansible-2.10.7 --system-site-packages
+python3.9 -m venv ansible-venv --system-site-packages
 
 pip install pip --upgrade
 
-pip install ansible-base ansible==2.10.7 boto3
+pip install ansible-core boto3
 ```
 
-In order for the commands above to work, ansible needs to be uninstalled or conflicts will occur with `ansible-base`. This is an issue because we also need selinux for python3, and this had to be pulled in from the global package list as we cannot install the correct version.
+**Note**: _As of December 2022, `ansible-core` (2.13.x) should be installed instead of `ansible-base`. Ansible-Core can only be installed with python3.9+_.
 
 
 7. Run the commands to setup openshift ansible
@@ -194,7 +198,7 @@ Command exited with non-zero status 127
 0inputs+0outputs (0major+22minor)pagefaults 0swaps
 ```
 
-**NOTE:** All ansible logs are wrapped in `time:` when using `oi-dev`.
+**Note:**: _All ansible logs are wrapped in `time:` when using `oi-dev`_.
 
 
 # OC Commands
@@ -209,12 +213,14 @@ oc get service -n test-ssh-bastion ssh-bastion -o jsonpath='{.status.loadBalance
 oc get service -n test-ssh-bastion
 ```
 
-See #5 in FAQ about ssh to the bastion. **NOTE:** The username is core.
+See #5 in FAQ about ssh to the bastion. 
+
+**Note:**: _The username is core_.
 
 
 ## Checking machines and machinesets
 
-_**NOTE:** `--all_namespaces` and `-A` are the same._
+**Note:** _`--all_namespaces` and `-A` are the same_.
 
 ```
 oc get machinesets -A
@@ -230,7 +236,7 @@ oc get machines -A
 _When running a normal openshift-install the command will only show nodes without the name RHEL in them. During an install with openshift ansible
 the machines will contain the machines for RHEL workers. You will see names ****-RHEL-***._
 
-_If you are running these steps immediately after the `CREATE` script, then you will notice that the machines are `provisioned` but **NOT** `running`._
+_If you are running these steps immediately after the `CREATE` script, then you will notice that the machines are `provisioned` but **Note** `running`._
 
 
 ## Delete Machines(ets)
