@@ -181,12 +181,12 @@ function DestroyCluster {
     openshift-install destroy cluster --log-level=DEBUG
 
     gcloud config configurations activate normal
-    gcloud compute firewall-rules delete "${INSTANCE_PREFIX}"
-    gcloud compute routers nats delete "${NAT_NAME}" --router="${INSTANCE_PREFIX}" --region="${REGION}"
-    gcloud compute routers delete "${INSTANCE_PREFIX}" --region "${REGION}"
-    gcloud compute networks subnets delete "${HOST_PROJECT_CONTROL_SUBNET}" --region "${REGION}"
-    gcloud compute networks subnets delete "${HOST_PROJECT_COMPUTE_SUBNET}" --region "${REGION}"
-    gcloud compute networks delete "${HOST_PROJECT_NETWORK}"
+    yes | gcloud compute firewall-rules delete "${INSTANCE_PREFIX}"
+    yes | gcloud compute routers nats delete "${NAT_NAME}" --router="${INSTANCE_PREFIX}" --region="${REGION}"
+    yes | gcloud compute routers delete "${INSTANCE_PREFIX}" --region "${REGION}"
+    yes | gcloud compute networks subnets delete "${HOST_PROJECT_CONTROL_SUBNET}" --region "${REGION}"
+    yes | gcloud compute networks subnets delete "${HOST_PROJECT_COMPUTE_SUBNET}" --region "${REGION}"
+    yes | gcloud compute networks delete "${HOST_PROJECT_NETWORK}"
 
     ResetOriginalAccount
 }
