@@ -55,7 +55,7 @@ The following command will add permissions to the new user:
 
 In the snippet above:
 - SUBSCRIPTION_ID - Id of the project found above (id in `az account show`)
-- USERNAME - Main name of the service principal (I used `bbarbach-installer`)
+- USERNAME - Main name of the service principal (I used `$USER}-installer`)
 - PURPOSE - What project you want this attached to 
 
 **Note**: _In old versions the `--scopes` was not required, now it is_.
@@ -65,7 +65,7 @@ The output should be something similar to:
 ```json
 {
   "appId": {uuid},
-  "displayName": "bbarbach-installer",
+  "displayName": "${USER}-installer",
   "password": {password},
   "tenant": {uuid}
 }

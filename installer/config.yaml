@@ -11,9 +11,9 @@ region: us-east1
 base_domain: devcluster.openshift.com
 
 # The secrets file contains all secrets for the installer
-secrets_file: "/home/bbarbach/secrets/pull-secrets.txt"
+secrets_file: "/home/${USER}/secrets/pull-secrets.txt"
 # The keys are typically found in /home/$USER/.ssh/
-ssh_key_file: "/home/bbarbach/.ssh/bbarbach.pub"
+ssh_key_file: "/home/${USER}/.ssh/${USER}.pub"
 
 versions:
   installer: 4.9.5
@@ -21,7 +21,7 @@ versions:
   
 installer:
   # location of the local version of openshift-installer
-  dir: "/home/bbarbach/dev/installer"
+  dir: "/home/${USER}/dev/installer"
   # image to use for Openshift 
   image: "quay.io/openshift-release-dev/ocp-release:4.10.10.x86_64"
 

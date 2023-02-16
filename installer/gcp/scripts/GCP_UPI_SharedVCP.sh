@@ -60,7 +60,7 @@ echo "Using image from ${RHCOS_IMAGE_NAME} in ${RHCOS_IMAGE_PROJECT}"
 export HOST_PROJECT="openshift-dev-installer"
 
 # A host project account with sufficient permissions (tested with project.Owner)
-export HOST_PROJECT_ACCOUNT="bbarbach@redhat.com"
+export HOST_PROJECT_ACCOUNT="${USER}@redhat.com"
 
 # The host project network name containing the subnets.
 export HOST_PROJECT_NETWORK_NAME="installer-shared-vpc"

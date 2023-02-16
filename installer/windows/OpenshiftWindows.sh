@@ -120,7 +120,7 @@ EOF
     # https://github.com/openshift/windows-machine-config-operator#create-a-private-key-secret
     # As noted in the link above, it is strongly recommended to use a different key than
     # the key used for cluster provisioning.
-    PRIVATE_KEY_WINDOWS=/home/bbarbach/.ssh/wmco
+    PRIVATE_KEY_WINDOWS=/home/${USER}/.ssh/wmco
     oc create secret generic cloud-private-key --from-file=private-key.pem=${PRIVATE_KEY_WINDOWS} -n openshift-windows-machine-config-operator
 
     # If this is already created then don't delete it later

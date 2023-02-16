@@ -17,7 +17,7 @@ controlPlane:
   replicas: 3
 metadata:
   creationTimestamp: null
-  name: bbarbach-xpn
+  name: ${USER}-xpn
 networking:
   clusterNetwork:
   - cidr: 10.128.0.0/14

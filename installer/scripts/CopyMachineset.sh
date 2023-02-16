@@ -16,7 +16,7 @@ function CopyMachineSets () {
     
     TempFile=/tmp/ms1.yaml
     MachineCopyName="hello-world"
-    SearchText="bbarbach"
+    SearchText="${USER}"
     
     # This script is intended be used to copy a machineset with a new name
     # where the name does not contain the INFRA-ID or the cluster name

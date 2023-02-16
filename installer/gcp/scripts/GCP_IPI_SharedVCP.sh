@@ -10,9 +10,9 @@
 # platform:                                                #
 #   gcp:                                                   #
 #     networkProjectID: openshift-dev-installer            #
-#     network: bbarbach-ipi-test                           #
-#     computeSubnet: bbarbach-ipi-test-subnet              #
-#     controlPlaneSubnet: bbarbach-ipi-test-subnet         #
+#     network: ${USER}-ipi-test                            #
+#     computeSubnet: ${USER}-ipi-test-subnet               #
+#     controlPlaneSubnet: ${USER}-ipi-test-subnet          #
 #     projectID: openshift-dev-installer                   #
 #     region: us-east1                                     #
 #                                                          #
@@ -32,7 +32,7 @@ openshift-install create ignition-configs
 export HOST_PROJECT="openshift-dev-installer"
 
 # A host project account with sufficient permissions (tested with project.Owner)
-export HOST_PROJECT_ACCOUNT="bbarbach@redhat.com"
+export HOST_PROJECT_ACCOUNT="${USER}@redhat.com"
 
 
 export NETWORK_CIDR='10.0.0.0/16'
@@ -45,7 +45,7 @@ export PROJECT_NAME=$(jq -r .gcp.projectID metadata.json)
 export REGION=$(jq -r .gcp.region metadata.json)
 
 # default for xpn work is installer-shared-vpc
-#export NETWORK_NAME="bbarbach-ipi-test"
+#export NETWORK_NAME="${USER}-ipi-test"
 export NETWORK_NAME="installer-shared-vpc"
 
 # You can find this under

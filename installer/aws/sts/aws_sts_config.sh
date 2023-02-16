@@ -27,7 +27,7 @@ set -eux
 
 # variables used in this script
 secretsFile=~/.docker/config.json
-configUser="bbarbach"
+configUser="${USER}"
 awsRegion="us-east-2"
 outputDir="."
 credsDir="."

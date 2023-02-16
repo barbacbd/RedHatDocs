@@ -236,7 +236,7 @@ information. For the purposes of this example the following config is set:
 region = us-east1
 zone = us-east1-b
 [core]
-account = bbarbach-dev@openshift-installer-shared-vpc.iam.gserviceaccount.com
+account = XXXX-dev@openshift-installer-shared-vpc.iam.gserviceaccount.com
 disable_usage_reporting = True
 project = openshift-installer-shared-vpc
 ```
@@ -269,7 +269,7 @@ controlPlane:
   replicas: 3
 metadata:
   creationTimestamp: null
-  name: bbarbach-dev-xpn
+  name: ${USER}-dev-xpn
 platform:
   gcp:
     projectID: openshift-installer-shared-vpc
@@ -348,7 +348,7 @@ Run the [`GCP_Destroy.sh`](./scripts/GCP_Destroy.sh). The script will cleanup _m
 
 1. Go to GCP (online site) and destroy the remaining resources.
 2. Select the host project (openshift-dev-installer).
-3. Navigate to `Cloud DNS`. Search for your username (for me it was `bbarbach`).
+3. Navigate to `Cloud DNS`. Search for your username (for me it was `${USER}`).
 4. Go into the resources here, and first select all records and `Delete records`.
 5. After all records have been deleted, you can delete the Zone.
 6. Navigate to the public DNS records. Again search for your name. **DO NOT** Delete anyone elses records. **DO NOT** delete the public zone.
@@ -446,7 +446,7 @@ The following errors (or similar) may be seen:
 #### Kube API Timeout
 
 ```
-DEBUG Still waiting for the Kubernetes API: Get "https://api.bbarbach-xpn.installer.gcpxpn.devcluster.openshift.com:6443/version": dial tcp 35.227.103.128:6443: i/o timeout
+DEBUG Still waiting for the Kubernetes API: Get "https://api.${USER}-xpn.installer.gcpxpn.devcluster.openshift.com:6443/version": dial tcp 35.227.103.128:6443: i/o timeout
 ```
 
 This is an indicator that the ignition is not able to be fetched. Confirm this checking the log bundle in the directory `serial`. Search for the text `fetch` in the bootstrap node log file. This will confirm that the ignition was unable to be fetched if there are errors surrounding this text.

@@ -15,7 +15,7 @@ controlPlane:
   replicas: 3
 metadata:
   creationTimestamp: null
-  name: bbarbach-dev-xpn
+  name: ${USER}-dev-xpn
 platform:
   gcp:
     projectID: openshift-installer-shared-vpc
