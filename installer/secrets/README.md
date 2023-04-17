@@ -2,7 +2,7 @@
 
 This document describes the creation of pull secrets for RedHat products/projects.
 
-**NOTE**: The CI pull secrets will change every ~90 days.
+**NOTE**: The CI pull secrets will change every ~30 days.
 
 
 # Grab the pull secrets
