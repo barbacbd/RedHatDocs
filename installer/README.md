@@ -14,7 +14,7 @@ is used to create a Docker image and create/install a cluster using openshift-in
 
 See the following Projects for references that will be mentioned throughout this document:
 
-- [Pull Secrets](https://github.com/barbacbd/RedHatDocs/blob/main/installer/secrets/PullSecret.md)
+- [Pull Secrets](https://github.com/barbacbd/RedHatDocs/blob/main/installer/secrets/README.md)
 - [Openshift Installer](https://github.com/openshift/installer)
 
 # Creating a cluster
@@ -89,7 +89,7 @@ The following parameters are required in the yaml file as inputs to the install-
 - platform - cloud platform
 - region - region for the platform (these may be similar between platforms, but are specific)
 - base_domain - domain for the cluster
-- secrets_file - File where the secrets information is stored, please [read](https://github.com/barbacbd/RedHatDocs/blob/main/installer/secrets/PullSecret.md) for more information.
+- secrets_file - File where the secrets information is stored, please [read](https://github.com/barbacbd/RedHatDocs/blob/main/installer/secrets/README.md) for more information.
 - ssh_key_file - File where the ssh key is stored (usually in ~/.ssh)
 
 The following parameters are required for the rest of the configuration process:
