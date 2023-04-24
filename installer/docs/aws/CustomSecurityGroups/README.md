@@ -133,4 +133,6 @@ Alter aws::Machinesets() to accept an install config. Both the machines::workers
 
 ### Alterations to destroy process
 
-[TODO]We must not destroy what we did not create.
+Verify that the destroy code will or will not have to be altered. Currently it appears that it does not require alterations. The resource is searched via the ARN. The `id` that is used to find the security group(s) should not be associated with the ARN.
+
+The deletion of the VPC may need to be altered as it _may_ fail when the vpc cannot be found. 
