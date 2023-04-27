@@ -117,6 +117,22 @@ The following is the same as `export key=value`
 Downloads can be found [here](https://amd64.ocp.releases.ci.openshift.org/).
 
 
+# Version control openshift client [OPTIONAL]
+
+Move the openshift client (oc) and openshift installer to your path. For instance:
+
+```bash
+mv oc oc-<version>
+mv oc-<version> /home/$USER/bin
+
+cd /home/$USER/bin
+
+ln -s oc-<version> oc
+```
+
+Now `oc` will be the version that you want it to be.
+
+
 # Extra installation notes
 
 When installing a cluster from the latest `master/main` branch, export an environment variable to override the release image.

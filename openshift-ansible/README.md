@@ -12,19 +12,26 @@ See the following Projects for references that will be mentioned throughout this
 - [OI-Dev](https://github.com/jstuever/oi-dev) - Simpler cluster installation utilizing openshift-ansible
 - [Openshift Installer](https://github.com/openshift/installer)
 - [Openshift Ansible](https://github.com/openshift/openshift-ansible)
+- [openshift-ansible-assistant](https://github.com/barbacbd/openshift-ansible-assistant)
 
 # Supported Platforms
 
 - AWS
 
-# Process
+# Future Supported Platforms
 
-1. Make a directory called `assets` in `oi-dev`
+- Azure
+- GCP
+
+# Prerequisites 
+
+## Make a directory called `assets` in `oi-dev`
 
 The assets directory is the default where the installation should occur for the `oi-dev` project to utilize openshift-installer information.
+
 <br>
 
-2. Ensure that there is an ssh key called `oi`.
+## Ensure that an ssh key `oi` exists.
 
 There should be a matching public key called `oi.pub`. It is ok to **copy** the
 ssh key that you normally use. DO NOT sim-link the keys as this could create issues if you
@@ -34,29 +41,7 @@ ever remove the keys or change them.
 
 <br>
 
-3. Create a cluster using openshift-installer or using the oi.sh script
-
-- Option 1
-
-```bash
-cd /path/to/installer/;
-
-hack/build.sh;
-
-bin/openshift-installer create cluster --dir /path/to/assets
-
-```
-
-Go through the process of creating a cluster for AWS.
-
-- Option 2
-
-```
-mkdir ~/oi
-mkdir {{ PLATFORM }}
-```
-
-Create a template for the install-config
+## Create a template for the install-config (optional)
 
 ```
 apiVersion: v1
@@ -68,10 +53,9 @@ platform:
     region: {{ REGION }}
 ```
 
-Move to the oi-dev directory and run `scripts/oi.sh`.
 <br>
 
-4. Add the openshift-installer bin to the path [OPTIONAL]
+## Add the openshift-installer bin to the path [OPTIONAL]
 
 `export PATH=/path/to/installer/bin:$PATH`
 
@@ -87,26 +71,9 @@ mv /path/to/installer/bin/openshift-installer /home/$USER/bin
 
 This makes the assumption that `/home/$USER/bin` is in your path.
 
+<br>
 
-5. Version control openshift client [OPTIONAL]
-
-Similar to step 4 (above), oc or the openshift client software can be version controlled by
-moving the file to `/home/$USER/bin`. From this directory we can rename the `oc` with a version
-for instance:
-
-```bash
-mv oc oc-<version>
-mv oc-<version> /home/$USER/bin
-
-cd /home/$USER/bin
-
-ln -s oc-<version> oc
-```
-
-Now `oc` will be the version that you want it to be.
-
-
-6. Setting up the environment
+## Setting up the environment
 
 **Note:** _Using `ansible==2.9.27` failed. Remove this from the computer (at least for now)_.
 
@@ -124,51 +91,101 @@ pip install ansible-core boto3
 
 **Note**: _As of December 2022, `ansible-core` (2.13.x) should be installed instead of `ansible-base`. Ansible-Core can only be installed with python3.9+_.
 
+<br>
 
-7. Run the commands to setup openshift ansible
+## Platform Specific
 
+### AWS
+
+The region that will be used for installation _should_ have an EC2 Key Pair with the name matching the username for the computer where the installation originated. _This can be altered, but the defaults of the oi-dev project use the username._
+
+
+# Create a cluster using openshift-installer or using the oi.sh script
+
+```bash
+cd /oi-dev
+mkdir assets
+scripts/oi.sh create cluster
 ```
-scripts/oi-byoh.sh bastion
-scripts/oi-byoh.sh create
-scripts/oi-byoh.sh prepare
-scripts/oi-byoh.sh upscale
-```
 
-# FAQ
+# Run the playbooks/tasks for openshift ansible
 
-1. What is a bastion?
+## Create the bastion
 
 The bastion was/is a defense mechanism that provides a link or connection to the cluster. An `ssh pod` or bastion is installed
 in the cluster so that we can reach the cluster through this pod. It provides a connection to the cluster but access must be
 achieved indirectly.
 
-Checking that the bastion was created ...
+To create the bastion execute the command:
+
+```bash
+scripts/oi-byoh.sh bastion
+```
 
 There should be a file `./assets/byoh/bastion`. The file will contain the bastion host.
 
 You may also verify that the bastion was created with
 
-```
+```bash
 oc get service -n test-ssh-bastion ssh-bastion -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
 ```
 
-The name _should_ match that of the host in `./assets/byoh/bastion`.
+**Note**: _replace hostname with ip for azure and gcp_.
 
-2. Openshift Installer vs Openshift Ansible
+```bash
+export KUBECONFIG=assets/auth/kubeconfig
+oc get service -n test-ssh-bastion
+```
 
-Openshift Ansible is generally related to ansible and talked about with versions 3.x. In the past, RHEL nodes were used. After
-the acquisition of the product RHCOS, ansible was migrated. There is still a need to install RHEL nodes, and thus openshift
-ansible was kept alive and used as a bridge with openshift installer to allow the users to spin up RHEL nodes. The openshift
-installer will only utilize RHCOS nodes (which do not have saved state) unless openshift ansible is used after a cluster is
-created.
+<br>
 
-3. Don't forget to destroy your cluster when finished !
+## Create the machinesets
 
-4. AWS key issues
+To create the machinesets run the command
 
-Go to AWS site, and create new keys or match the keys for each region. If you decide to install to a different region, then that region needs to have a matching key. **You can name the keys the same between regions.**
+```bash
+scripts/oi-byoh.sh create
+```
 
-5. Testing SSH
+You can verify that the machinesets have been created with `oc`.
+
+```bash
+export KUBECONFIG=assets/auth/kubeconfig
+oc get machinesets -A
+```
+
+You should see new `RHEL` machinesets.
+
+<br>
+
+## Prepare the machines 
+
+```bash
+scripts/oi-byoh.sh prepare
+```
+
+<br>
+
+## Bring up all of the RHEL nodes
+
+To bring up the rhel nodes and ensure all necessary packages are installed and up to date run the following command:
+
+```bash
+scripts/oi-byoh.sh scaleup
+```
+<br>
+
+## Upgrades
+
+```bash
+scripts/oi-byoh.sh upgrade
+```
+
+All tests should also run the upgrade to ensure that they pass.
+
+<br>
+
+## SSH to the RHEL Node(s)
 
 ```
 ssh -o IdentityFile=~/.ssh/oi -o StrictHostKeyChecking=no core@$(<assets/byoh/bastion)
@@ -184,13 +201,26 @@ scripts/oi-byoh.sh ssh ec2-user@<host from hosts file>
 
 **Note:** The user above was `ec2-user`, please make sure that this remains!
 
+<br>
 
-6. Does not know about ansible
+# FAQ
+
+## Openshift Installer vs Openshift Ansible
+
+Openshift Ansible is generally related to ansible and talked about with versions 3.x. In the past, RHEL nodes were used. After
+the acquisition of the product RHCOS, ansible was migrated. There is still a need to install RHEL nodes, and thus openshift
+ansible was kept alive and used as a bridge with openshift installer to allow the users to spin up RHEL nodes. The openshift
+installer will only utilize RHCOS nodes (which do not have saved state) unless openshift ansible is used after a cluster is
+created.
+
+<br>
+
+## Error - Cannot run ansible playbook
 
 If you used a venv and it is **NOT** sourced, or if ansible is not installed the following error could
 appear during `oi-byoh.sh create`:
 
-```
+```bash
 $ scripts/oi-byoh.sh create
 time: cannot run ansible-playbook: No such file or directory
 Command exited with non-zero status 127
@@ -202,21 +232,6 @@ Command exited with non-zero status 127
 
 
 # OC Commands
-
-## Bastion Lookup
-
-```
-oc get service -n test-ssh-bastion ssh-bastion -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
-```
-
-```
-oc get service -n test-ssh-bastion
-```
-
-See #5 in FAQ about ssh to the bastion. 
-
-**Note:**: _The username is core_.
-
 
 ## Checking machines and machinesets
 
@@ -238,6 +253,7 @@ the machines will contain the machines for RHEL workers. You will see names ****
 
 _If you are running these steps immediately after the `CREATE` script, then you will notice that the machines are `provisioned` but **Note** `running`._
 
+<br>
 
 ## Delete Machines(ets)
 
@@ -249,6 +265,7 @@ oc delete machinesets -n {{ namespace }} {{ machine_name }}
 
 You will see it say `deleting`, after that is completed (usualy takes 1-2 minutes). You are able to rerun the commands.
 
+<br>
 
 # Cleanup/Destroy clusters that are no longer on your local system
 

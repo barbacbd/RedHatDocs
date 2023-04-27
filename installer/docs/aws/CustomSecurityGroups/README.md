@@ -97,6 +97,12 @@ variable "aws_vpc" {
 
 [TODO]: Investigate what the VPC() function is doing when discovering and uncovering the subnets. Do we still need this process?
 
+1. Find the VPC that should be used based on the security groups
+2. Find all of the subnets based on the VPC
+3. Change the VPC and populateSubnets function to allow selecting data using this method.
+
+https://docs.aws.amazon.com/sdk-for-go/api/service/ec2/#DescribeSubnetsInput
+
 <br>
 
 ### Provide information to terraform indicating pre existing security group(s)
