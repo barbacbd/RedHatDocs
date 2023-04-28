@@ -170,6 +170,11 @@ The region that will be used for installation _should_ have an EC2 Key Pair with
 
 An ssh key (the same that will be used for installation) should be added to the **entire** project. Follow the [link](https://medium.com/@rajeshkanna_a/google-cloud-platform-adding-or-removing-project-wide-public-ssh-keys-5e3fcf22f75d) for more information. The public key will have a username attached to it, and this username will be later for ssh tasks. _If your installation fails/stalls during ssh tasks, please check the `ansible_user` in `assets/byoh/hosts`_. 
 
+<br>
+
+### Azure
+
+An ssh key will need to be added to Azure by following the [instructions](https://learn.microsoft.com/en-us/azure/virtual-machines/ssh-keys-portal). The key in azure is specific to a project as well as a region. Please note this for your installations. 
 
 # Create a cluster using openshift-installer or using the oi.sh script
 
