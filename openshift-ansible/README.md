@@ -31,6 +31,22 @@ The assets directory is the default where the installation should occur for the 
 
 <br>
 
+## Add the mirror credentials
+
+For the installation to complete packages must be downloaded from an openshift mirror. Supply these credentials in the file `~/oi/openshift-mirror.json`.
+
+```json
+{
+  "url": "https://mirror2.openshift.com/enterprise",
+  "username": "{ username }",
+  "password": "{ password }"
+}
+```
+
+**Note**: _The url is an example above. It is possible to use other mirrors. The mirror above is used to download the correct repos where our packages are installed._
+
+<br>
+
 ## Ensure that an ssh key `oi` exists.
 
 There should be a matching public key called `oi.pub`. It is ok to **copy** the
