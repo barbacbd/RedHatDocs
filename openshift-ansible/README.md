@@ -17,11 +17,11 @@ See the following Projects for references that will be mentioned throughout this
 # Supported Platforms
 
 - AWS
+- GCP
 
 # Future Supported Platforms
 
 - Azure
-- GCP
 
 # Prerequisites 
 
@@ -98,6 +98,12 @@ pip install ansible-core boto3
 ### AWS
 
 The region that will be used for installation _should_ have an EC2 Key Pair with the name matching the username for the computer where the installation originated. _This can be altered, but the defaults of the oi-dev project use the username._
+
+<br>
+
+### GCP
+
+An ssh key (the same that will be used for installation) should be added to the **entire** project. Follow the [link](https://medium.com/@rajeshkanna_a/google-cloud-platform-adding-or-removing-project-wide-public-ssh-keys-5e3fcf22f75d) for more information. The public key will have a username attached to it, and this username will be later for ssh tasks. _If your installation fails/stalls during ssh tasks, please check the `ansible_user` in `assets/byoh/hosts`_. 
 
 
 # Create a cluster using openshift-installer or using the oi.sh script
@@ -196,10 +202,10 @@ The above command will get you to the bastion.
 To ssh to the other nodes using the Bastion has a hopping point, look for the hosts in `assets/byoh/hosts`
 
 ```
-scripts/oi-byoh.sh ssh ec2-user@<host from hosts file>
+scripts/oi-byoh.sh ssh {username}@<host from hosts file>
 ```
 
-**Note:** The user above was `ec2-user`, please make sure that this remains!
+The username can be found in `assets/byoh/hosts`. For aws the default is `ec2-user` while other platforms use {username}.
 
 <br>
 
