@@ -25,6 +25,55 @@ See the following Projects for references that will be mentioned throughout this
 
 # Prerequisites 
 
+## Package Installation
+
+**Ensure that your python environment is active.**
+
+<br>
+
+### AWS
+
+Install the collection:
+
+```bash
+ansible-galaxy collection install amazon.aws
+```
+
+Install the python packages:
+
+```bash
+boto3
+botocore
+```
+
+<br>
+
+### GCP
+
+Install the collection:
+
+```bash
+ansible-galaxy collection install google.cloud
+```
+
+<br>
+
+### Azure
+
+Install the collection:
+
+```bash
+ansible-galaxy collection install azure.azcollection
+```
+
+Install the python packages:
+
+```bash
+pip install msrest msrestazure azure-cli azure-storage-blob azure-mgmt-automation
+```
+
+<br>
+
 ## Make a directory called `assets` in `oi-dev`
 
 The assets directory is the default where the installation should occur for the `oi-dev` project to utilize openshift-installer information.
