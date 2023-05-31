@@ -8,7 +8,7 @@ export AWS_SHARED_CREDENTIALS_FILE="/home/${USER}/.aws/credentials"
 EXPIRATION_DATE=$(date -d '4 hours' --iso=minutes --utc)
 TAGS="Key=expirationDate,Value=${EXPIRATION_DATE}"
 REGION="us-east-1"
-NAMESPACE="bbarbach-test"
+NAMESPACE="bbarbach-sg"
 SHARED_DIR=/tmp
 ZONES_COUNT=3
 
