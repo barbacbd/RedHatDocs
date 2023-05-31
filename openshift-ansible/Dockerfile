@@ -52,12 +52,6 @@ RUN python3 -m venv azure-cli-venv && \
     pip install azure-cli && \
     deactivate
 
-# 6. environment variable for platforms
-# Not building secrets and keys into the DOCKERFILE so that the
-# user is forced to copy their own over in the future. These values
-# can change and thus should not be added here even in a generic fashion
-
-
 # Grab the openshift client, unpack it and move it to the bin for use
 RUN cd /Downloads && \
     wget https://mirror.openshift.com/pub/openshift-v4/clients/ocp/latest/openshift-client-linux.tar.gz && \
