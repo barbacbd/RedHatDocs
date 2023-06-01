@@ -70,5 +70,7 @@ AvailabilityZones=$(aws ec2 describe-subnets --region "${REGION}" --subnet-ids $
 echo "$AvailabilityZones" > "${SHARED_DIR}/availability_zones"
 echo "AvailabilityZones: ${AvailabilityZones}"
 
-
-
+metadata_name="bbarbach-test"
+SecurityGroup="$(aws ec2 create-security-group --region ${REGION} --description 'CI custom security groups' --group-name 'CI ${metadata_name} sg'  --vpc-id ${VpcId})"
+echo "${SecurityGroup}" > "${SHARED_DIR}/security_group"
+echo "Security Group: ${SecurityGroup}"

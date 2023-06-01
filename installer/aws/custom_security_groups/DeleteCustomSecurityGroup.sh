@@ -10,8 +10,9 @@ export AWS_SHARED_CREDENTIALS_FILE="/home/${USER}/.aws/credentials"
 REGION="us-east-1"
 SHARED_DIR=/tmp
 
-echo "Deleting AWS CloudFormation stacks"
+aws ec2 delete-security-group --region ${REGION} --group-id $(cat ${SHARED_DIR}/security_group)
 
+echo "Deleting AWS CloudFormation stacks"
 stack_list="${SHARED_DIR}/vpc_stack_name"
 if [ -e "${stack_list}" ]; then
     for stack_name in `tac ${stack_list}`; do 
@@ -39,5 +40,6 @@ rm -rf "${SHARED_DIR}/subnet_ids"
 rm -rf "${SHARED_DIR}/vpc_id"
 rm -rf "${SHARED_DIR}/vpc_stack_name"
 rm -rf "${SHARED_DIR}/vpc_stack_output"
+rm -rf "${SHARED_DIR}/security_group"
 
 exit 0
