@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1.3-labs
 from fedora:latest
 
 MAINTAINER Brent Barbachem <barbacbd@gmail.com>
@@ -8,7 +9,7 @@ LABEL name="openshift-ansible" \
 
 # update and install new packages
 RUN yum update -y
-RUN yum install -y jq wget ncurses python3-pip unzip groff git
+RUN yum install -y jq wget ncurses python3-pip unzip groff git time
 
 RUN alias ll='ls -la'
 
@@ -45,12 +46,8 @@ RUN python3 -m pip install pip --upgrade && \
     pip install -r /root/.ansible/collections/ansible_collections/google/cloud/requirements.txt && \
     pip install -r /root/.ansible/collections/ansible_collections/azure/azcollection/requirements-azure.txt
 
-# The version of azure-cli will ruin the install that we did above, so for now let's
-# install cli into a virtual environment to use the CLI.
-RUN python3 -m venv azure-cli-venv && \
-    source azure-cli-venv/bin/activate && \
-    pip install azure-cli && \
-    deactivate
+# install the version of azure cli that will work with the other azure packages
+RUN python3 -m pip install azure-cli==2.45.0 azure-cli-core==2.45.0 azure-cli-telemetry==1.0.8 --no-deps
 
 # Grab the openshift client, unpack it and move it to the bin for use
 RUN cd /Downloads && \
@@ -69,3 +66,15 @@ RUN ln -s /devel/openshift-ansible /devel/openshift-ansible-assistant/openshift-
     mkdir -p /devel/openshift-ansible-assistant/assets
 
 
+ENV AWS_PROFILE=openshift-dev
+ENV OC_TOKEN="1Zzp7_e8hcJtfNkKMQYwU5g8ZMKOzQy5cbkiItUe50I"
+ENV CLOUDSDK_PYTHON="/usr/bin/python3"
+# NOTE:
+# This is specific to the current installation but should be changed for others
+ENV GOOGLE_APPLICATION_CREDENTIALS=/.gcp/bbarbach-norm-gcp-key.json
+
+RUN echo "alias ll='ls -la'" >> /root/.bashrc
+RUN echo "if [ -f '/Downloads/google-cloud-sdk/path.bash.inc' ]; then . /Downloads/google-cloud-sdk/path.bash.inc; fi" >> /root/.bashrc
+RUN echo "if [ -f '/Downloads/google-cloud-sdk/completion.bash.inc' ]; then . /Downloads/google-cloud-sdk/completion.bash.inc; fi" >> /root/.bashrc
+
+RUN source /root/.bashrc

@@ -44,5 +44,15 @@ RUN cd /Downloads && \
     mv kubectl /usr/bin && \
     cd -
 
+ENV AWS_PROFILE=openshift-dev
+ENV OC_TOKEN="1Zzp7_e8hcJtfNkKMQYwU5g8ZMKOzQy5cbkiItUe50I"
+ENV CLOUDSDK_PYTHON="/usr/bin/python3"
+# NOTE:
+# This is specific to the current installation but should be changed for others
+ENV GOOGLE_APPLICATION_CREDENTIALS=/.gcp/bbarbach-norm-gcp-key.json
+
+RUN echo "alias ll='ls -la'" >> /root/.bashrc
+RUN echo "if [ -f '/Downloads/google-cloud-sdk/path.bash.inc' ]; then . /Downloads/google-cloud-sdk/path.bash.inc; fi" >> /root/.bashrc
+RUN echo "if [ -f '/Downloads/google-cloud-sdk/completion.bash.inc' ]; then . /Downloads/google-cloud-sdk/completion.bash.inc; fi" >> /root/.bashrc
 
 
