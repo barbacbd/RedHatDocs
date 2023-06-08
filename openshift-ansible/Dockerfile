@@ -11,8 +11,6 @@ LABEL name="openshift-ansible" \
 RUN yum update -y
 RUN yum install -y jq wget ncurses python3-pip unzip groff git time
 
-RUN alias ll='ls -la'
-
 # Copy over all of the data from root to /
 COPY root /
 
@@ -69,6 +67,7 @@ RUN ln -s /devel/openshift-ansible /devel/openshift-ansible-assistant/openshift-
 ENV AWS_PROFILE=openshift-dev
 ENV OC_TOKEN="1Zzp7_e8hcJtfNkKMQYwU5g8ZMKOzQy5cbkiItUe50I"
 ENV CLOUDSDK_PYTHON="/usr/bin/python3"
+ENV AZURE_PROFILE="/root/.azure/osServicePrincipal.json"
 # NOTE:
 # This is specific to the current installation but should be changed for others
 ENV GOOGLE_APPLICATION_CREDENTIALS=/.gcp/bbarbach-norm-gcp-key.json
