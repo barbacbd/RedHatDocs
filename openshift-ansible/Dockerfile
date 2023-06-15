@@ -9,7 +9,7 @@ LABEL name="openshift-ansible" \
 
 # update and install new packages
 RUN yum update -y
-RUN yum install -y jq wget ncurses python3-pip unzip groff git time
+RUN yum install -y jq wget ncurses python3-pip unzip groff git time emacs
 
 # Copy over all of the data from root to /
 COPY root /
@@ -77,3 +77,18 @@ RUN echo "if [ -f '/Downloads/google-cloud-sdk/path.bash.inc' ]; then . /Downloa
 RUN echo "if [ -f '/Downloads/google-cloud-sdk/completion.bash.inc' ]; then . /Downloads/google-cloud-sdk/completion.bash.inc; fi" >> /root/.bashrc
 
 RUN source /root/.bashrc
+
+# set mirror
+RUN ln -s /oi/ /root/
+
+# copy the files over
+RUN cp -R /.ssh /root/.ssh
+
+# Set all of the GCP variables through gcloud
+RUN ln -s /.gcp /root/.gcp
+ENV PATH $PATH:/Downloads/google-cloud-sdk/bin
+RUN gcloud auth activate-service-account $(cat /.gcp/osServiceAccount.json | jq -r '.client_email') --key-file /.gcp/osServiceAccount.json
+RUN gcloud config set account $(cat /.gcp/osServiceAccount.json | jq -r '.client_email')
+RUN gcloud config set project openshift-dev-installer
+RUN gcloud config set compute/region us-east1
+RUN gcloud config set compute/zone us-east1-b

@@ -7,6 +7,7 @@
 # - /home/${USER}/.aws                  -> /root/.aws
 # - /home/${USER}/.azure                -> /root/.azure
 # - /home/${USER}/.gcp                  -> /root/.gcp
+# - /home/${USER}/oi                    -> /root/oi
 #
 # The following information is added to the the image if present, but
 # this data changes often this is a WARNING that the user will want
@@ -45,6 +46,15 @@ done
 # copy over all ssh keys
 if [ -d "/home/${USER}/.ssh" ]; then
     cp -R /home/${USER}/.ssh .
+fi
+
+# copy over the oi directory. This is required for the openshift-ansible-assistant
+# or the oi-dev projects. The oi directory contains the mirror required for
+# openshift ansible installs
+if [ -d "/home/${USER}/oi" ]; then
+    cp -R /home/${USER}/oi .
+else
+    echo "WARNING: oi directory not found, mirror will not be added to image"
 fi
 
 # Get the configuration or secret key information for creating a
