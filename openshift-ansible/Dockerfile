@@ -79,10 +79,16 @@ RUN echo "if [ -f '/Downloads/google-cloud-sdk/completion.bash.inc' ]; then . /D
 RUN source /root/.bashrc
 
 # set mirror
-RUN ln -s /oi/ /root/
+RUN ln -s /oi/ /root/oi 
 
 # copy the files over
 RUN cp -R /.ssh /root/.ssh
+
+# configuration for aws
+RUN ln -s /.aws /root/.aws
+
+# configuration for azure
+RUN ln -s /.azure /root/.azure
 
 # Set all of the GCP variables through gcloud
 RUN ln -s /.gcp /root/.gcp
