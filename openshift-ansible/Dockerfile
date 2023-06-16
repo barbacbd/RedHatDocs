@@ -9,7 +9,7 @@ LABEL name="openshift-ansible" \
 
 # update and install new packages
 RUN yum update -y
-RUN yum install -y jq wget ncurses python3-pip unzip groff git time emacs
+RUN yum install -y jq wget ncurses python3-pip unzip groff git time emacs bind-utils
 
 # Copy over all of the data from root to /
 COPY root /
@@ -82,10 +82,13 @@ RUN source /root/.bashrc
 RUN ln -s /oi/ /root/oi 
 
 # copy the files over
-RUN cp -R /.ssh /root/.ssh
+RUN cp /.ssh/* /root/.ssh
 
 # configuration for aws
 RUN ln -s /.aws /root/.aws
+# this is only needed if the user for the system is not set.
+# BE ADVISED: change the value below for other users (this is the name of the key in aws).
+RUN echo "export OI_AWS_KEY_NAME=bbarbach" >> /root/.bashrc
 
 # configuration for azure
 RUN ln -s /.azure /root/.azure
