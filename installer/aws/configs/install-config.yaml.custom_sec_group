@@ -1,0 +1,45 @@
+additionalTrustBundlePolicy: Proxyonly
+apiVersion: v1
+baseDomain: devcluster.openshift.com
+compute:
+- architecture: amd64
+  hyperthreading: Enabled
+  name: worker
+  replicas: 3
+  platform:
+    aws:
+      additionalSecurityGroupIDs:
+        - sg-010b978fc46dca6c4
+controlPlane:
+  architecture: amd64
+  hyperthreading: Enabled
+  name: master
+  replicas: 3
+  platform:
+    aws:
+      additionalSecurityGroupIDs:
+        - sg-010b978fc46dca6c4
+metadata:
+  creationTimestamp: null
+  name: bbarbach-tftest
+networking:
+  clusterNetwork:
+  - cidr: 10.128.0.0/14
+    hostPrefix: 23
+  machineNetwork:
+  - cidr: 10.0.0.0/16
+  networkType: OVNKubernetes
+  serviceNetwork:
+  - 172.30.0.0/16
+platform:
+  aws:
+    region: us-east-1
+    subnets:
+      - subnet-0aac2a55aa813016c
+      - subnet-0e59543d607fcdb27
+      - subnet-0f8395dddd85e57eb
+      - subnet-0988a23aa12a87540
+      - subnet-027efe67e428f1dc1
+      - subnet-0edaf1f7d9bc18722
+publish: External
+

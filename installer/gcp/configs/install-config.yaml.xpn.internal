@@ -1,0 +1,37 @@
+additionalTrustBundlePolicy: Proxyonly
+apiVersion: v1
+baseDomain: installer.bbarbach.devcluster.openshift.com
+credentialsMode: Passthrough
+compute:
+- architecture: amd64
+  hyperthreading: Enabled
+  name: worker
+  platform: {}
+  replicas: 3
+controlPlane:
+  architecture: amd64
+  hyperthreading: Enabled
+  name: master
+  platform: {}
+  replicas: 3
+metadata:
+  creationTimestamp: null
+  name: bbarbach-xpn
+networking:
+  clusterNetwork:
+  - cidr: 10.124.0.0/14
+    hostPrefix: 23
+  machineNetwork:
+  - cidr: 10.128.0.0/16
+  networkType: OVNKubernetes
+  serviceNetwork:
+  - 172.30.0.0/16
+platform:
+  gcp:
+    projectID: openshift-installer-shared-vpc
+    region: us-east1
+    network: installer-shared-vpc
+    computeSubnet: installer-shared-vpc-subnet-2
+    controlPlaneSubnet: installer-shared-vpc-subnet-1
+    networkProjectID: openshift-dev-installer
+publish: Internal
