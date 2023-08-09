@@ -21,6 +21,7 @@ This document is put together to assist with information regarding the GCP platf
         * [Destroying Resources](#destroying-resources)
    * [GCP Resource Manipulation](#gcp-resource-manipulation)
       * [Adding Disks](#adding-disks)
+   * [GCloud CLI Authentication](#gcloud-cli-authentication)
    * [Troubleshooting](#troubleshooting)
       * [Failure During Kube API](#failure-during-kube-api)
 
@@ -435,6 +436,20 @@ Output the above into a file called deploy.yaml
 7. Visit GCP -> Disks, and you will see the new disk created. 
 
 <br><br>
+
+## GCloud CLI Authentication
+
+The installer can use the gcloud credentials for authentication. In order to do this the profile must be signed in to prior to installation. Set the default login information:
+
+```bash
+export GOOGLE_APPLICATION_CREDENTIALS=$HOME/.gcp/<Path-To-Profile>.json
+```
+
+Then log in via gcloud:
+
+```bash
+gcloud auth application-default login
+```
 
 ## Troubleshooting
 
