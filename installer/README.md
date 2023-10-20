@@ -33,6 +33,15 @@ bin/openshift-installer create cluster
 This process will start by asking for some information that will be generated in the `install-config.yaml`.
 Then the process of installing will begin.
 
+## Common Build Args
+
+`MAKEFLAGS=-j12 MODE=dev TAGS="release" ./hack/build.sh`
+
+- `-j12`: Build with 12 threads.
+- `MODE=dev`: Debug build environment.
+- `TAGS="release"`: Release build, required to set into debug mode.
+
+
 # Accessing the cluster
 
 The end of the installation will provide information about entering the cluster:
