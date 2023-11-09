@@ -103,3 +103,15 @@ To be able to run this code the Stage interface must be edited to include the ne
 ExtractLBConfig(directory string, terraformDir string, file *asset.File, tfvarsFile *asset.File) (ignition string, err error)
 ```
 
+# Reach Kube API
+
+During this process, api and api-int dns records are not created. Public and Private zones are not created, because the installer cannot create these zones and/or records in a users DNS solution. The installer does have the ability to create these when the DNS solution for the cluster is the Core DNS pod. 
+
+Invetigation brought me to the idea of editing the TLS Certificates. The installer was able to reach the Kube API but the connection was not verified on the other side. This means that the TLS cert for the client was correct but the remote server did not have the correct cert. This seems simple enough, but editing certificates that are used throughout the cluster is **very dangerous**. The investigation would no longer be considered valid.
+
+The Kubeconfig in the installer is a struct, `rest.Config`. The struct has a field called Dial which takes a function. The purpose of this function is to create an effect of "when this host address is used, actually use this IP Address". Essentially when the Kubeconfig tries to reach api.<cluser-domain> at port 6443, the installer will actually ask it to go to the IP Address of the public load balancer at the same port. 
+
+# What's Next?
+
+The bootkube process is edited to pass the load balancer config to the Machine Config Operator (MCO). 
+
