@@ -2,6 +2,9 @@
 
 The doc is created to document the process for allowing users to supply managed dns solutions during an IPI installation.
 
+
+**Note that this document provides a solution that was present in the openshift installer for openshift 4.13. The current implementation in openshift 4.14+ does not include the ability to Bring-Your-Own DNS Solution.**
+
 # Previous Work
 
 - https://github.com/openshift/installer/pull/6288
@@ -195,6 +198,11 @@ The format for the long name of the managed zone is `project/%s/managedZones/%s`
 
 **Note**: _The cluster ingress operator was updated to accept this format [PR 855](https://github.com/openshift/cluster-ingress-operator/pull/855)._
 
+
+# GCP Resource Creation
+
+1. The host project contains the network. The network must be shared with the service project. All subnets in the required regions must be shared. You should be able to go to GCP Web Console ->  VPC Networks -> Shared VPC to see this information. 
+2. The network must be created correctly including the subnets, Nat Gateway to the Public, and router. Any of these steps missing may result in the user seeing a Bootstrap error as the API and API-Int Servers cannot be resolved. 
 
 # Assumptions
 
