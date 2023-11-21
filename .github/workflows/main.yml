@@ -1,8 +1,9 @@
 name: Add Label
 
 on:
-  pull_request:
-    types: [opened, edited]
+  workflow_dispatch:
+    pull_request:
+      types: [opened, edited]
 
 jobs:
   add_label:
@@ -52,7 +53,7 @@ jobs:
           fi
       - name: print data
         run: |
-	  echo "${{ steps.determine_owners.outputs.label }}"
+          echo "${{ steps.determine_owners.outputs.label }}"
       - name: add label
         uses: actions-ecosystem/action-add-labels@v1
         with:
