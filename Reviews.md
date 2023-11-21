@@ -31,9 +31,6 @@ The purpose of this document is to provide information to assist in the peer rev
 1. If a step in a procedure is to run a command, add "run/enter the following command". The [following page](https://github.com/openshift/openshift-docs/blob/main/contributing_to_docs/doc_guidelines.adoc#code-blocks-command-syntax-and-example-output) provides several examples.
 
 
-
-
-
 # Rebasing
 
 `git pull --rebase <upstream> master`
