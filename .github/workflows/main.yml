@@ -45,7 +45,7 @@ jobs:
           fi
 
           team=$(echo $output | jq -r '.team')
-          if [ $team == "null" ]; then
+          if [ "$team" == "null" ]; then
             echo "label=external-user-owned" >> $GITHUB_OUTPUT
           else
             echo "label=$team" >> $GITHUB_OUTPUT
