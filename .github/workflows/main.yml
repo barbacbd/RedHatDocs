@@ -1,0 +1,30 @@
+name: Add Label
+
+on:
+  pull_request:
+    types: opened
+
+jobs:
+  add_label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: install deps
+        run: |
+          yes | sudo apt update
+          yes | sudo apt upgrade
+          yes | sudo apt install python3
+          yes | sudo apt install python3-pip
+          yes | python3 -m pip install pyyaml
+          yes | sudo apt install jq
+      - name: determine owners
+        id: determine_owners
+        run: |
+          echo "This PR is opened by ${{ github.event.pull_request.user.login }} ."
+          output=`./test.sh ${{ github.event.pull_request.user.login }}`
+          echo "label=$output" >> $GITHUB_OUTPUT
+      - name: add label
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: ${{ steps.determine_owners.label }}
