@@ -46,11 +46,12 @@ jobs:
 
           team=$(echo $output | jq -r '.team')
           if [ "$team" == "null" ]; then
-            echo "label=external-user-owned" >> $GITHUB_OUTPUT
+            echo "::set-output name=label::external-user-owned"
           else
-            echo "label=$team" >> $GITHUB_OUTPUT
+            echo "::set-output name=label::$team"
           fi
       - name: add label
         uses: actions-ecosystem/action-add-labels@v1
+	
         with:
-          labels: ${{steps.determine_owners.label}}
+          labels: ${{ steps.determine_owners.outputs.label }}
