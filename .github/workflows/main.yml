@@ -50,8 +50,10 @@ jobs:
           else
             echo "::set-output name=label::$team"
           fi
+      - name: print data
+        run: |
+	  echo "${{ steps.determine_owners.outputs.label }}"
       - name: add label
         uses: actions-ecosystem/action-add-labels@v1
-	
         with:
           labels: ${{ steps.determine_owners.outputs.label }}
