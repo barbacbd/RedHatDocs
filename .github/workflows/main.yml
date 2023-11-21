@@ -52,6 +52,5 @@ jobs:
           fi
       - name: add label
         uses: actions-ecosystem/action-add-labels@v1
-	
         with:
           labels: ${{ steps.determine_owners.outputs.label }}
