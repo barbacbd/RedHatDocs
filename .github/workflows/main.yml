@@ -1,9 +1,8 @@
 name: Add Label
 
 on:
-  workflow_dispatch:
-    pull_request:
-      types: [opened, edited]
+  pull_request:
+    types: [opened, edited]
 
 jobs:
   add_label:
@@ -22,7 +21,6 @@ jobs:
       - name: determine owners
         id: determine_owners
         run: |
-          echo "This PR is opened by ${{ github.event.pull_request.user.login }} ."
           OWNER_FILE_DATA=`curl https://raw.githubusercontent.com/barbacbd/RedHatDocs/main/OWNERS_ALIASES -o TMP_ALIASES`
           pyoutput=$(python3 -c '
           import json;
@@ -31,30 +29,21 @@ jobs:
 
           path = "./TMP_ALIASES";
           data = yaml.safe_load(open(path));
-          searchUser = str(sys.argv[1])
+          searchUser = str(sys.argv[1]);
 
-          userTeam = None
+          userTeam = "external-user-owned";
           for team in data["aliases"]:
               if searchUser in data["aliases"][team]:
                   userTeam = team
                   break
 
-          print(json.dumps({"team": userTeam}))' ${{ github.event.pull_request.user.login }})
-          
+          print(userTeam)' ${{ github.event.pull_request.user.login }})
+
           if [ -f TMP_ALIASES ]; then
             rm TMP_ALIASES
           fi
-
-          team=$(echo $output | jq -r '.team')
-          if [ "$team" == "null" ]; then
-            echo "::set-output name=label::external-user-owned"
-          else
-            echo "::set-output name=label::$team"
-          fi
-      - name: print data
-        run: |
-          echo "${{ steps.determine_owners.outputs.label }}"
+          echo "LABEL=$pyoutput" >> $GITHUB_OUTPUT
       - name: add label
         uses: actions-ecosystem/action-add-labels@v1
         with:
-          labels: ${{ steps.determine_owners.outputs.label }}
+          labels: "${{ steps.determine_owners.outputs.LABEL }}"
