@@ -2,7 +2,7 @@ name: Add Label
 
 on:
   pull_request:
-    types: opened
+    types: [opened, edited]
 
 jobs:
   add_label:
@@ -22,9 +22,35 @@ jobs:
         id: determine_owners
         run: |
           echo "This PR is opened by ${{ github.event.pull_request.user.login }} ."
-          output=`./test.sh ${{ github.event.pull_request.user.login }}`
-          echo "label=$output" >> $GITHUB_OUTPUT
+          OWNER_FILE_DATA=`curl https://raw.githubusercontent.com/barbacbd/RedHatDocs/main/OWNERS_ALIASES -o TMP_ALIASES`
+          pyoutput=$(python3 -c '
+          import json;
+          import sys;
+          import yaml;
+
+          path = "./TMP_ALIASES";
+          data = yaml.safe_load(open(path));
+          searchUser = str(sys.argv[1])
+
+          userTeam = None
+          for team in data["aliases"]:
+              if searchUser in data["aliases"][team]:
+                  userTeam = team
+                  break
+
+          print(json.dumps({"team": userTeam}))' ${{ github.event.pull_request.user.login }})
+          
+          if [ -f TMP_ALIASES ]; then
+            rm TMP_ALIASES
+          fi
+
+          team=$(echo $output | jq -r '.team')
+          if [ $team == "null" ]; then
+            echo "label=external-user-owned" >> $GITHUB_OUTPUT
+          else
+            echo "label=$team" >> $GITHUB_OUTPUT
+          fi
       - name: add label
         uses: actions-ecosystem/action-add-labels@v1
         with:
-          labels: ${{ steps.determine_owners.label }}
+          labels: ${{steps.determine_owners.label}}
