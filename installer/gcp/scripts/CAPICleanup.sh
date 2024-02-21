@@ -29,6 +29,12 @@ fi
 
 infraID=`jq -r '.infraID' metadata.json`
 
+INFO "Attempting to destroy any cluster-api process"
+output=`ps aux | grep cluster-api | awk '{print $2}'`
+for out in $output; do
+    sudo kill -9 $out
+done
+
 INFO "Attempting to destroy any cluster-api-provider-gcp process"
 output=`ps aux | grep cluster-api-provider-gcp | awk '{print $2}'`
 for out in $output; do
