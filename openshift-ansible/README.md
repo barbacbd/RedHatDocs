@@ -166,6 +166,8 @@ The region that will be used for installation _should_ have an EC2 Key Pair with
 
 <br>
 
+If the user is unable to find the machines during the `create` step, it's possible that the RHEL version is not the default. The user can fix this by updating the default version of RHEL found [here](https://github.com/barbacbd/openshift-ansible-assistant/blob/master/playbooks/byoh-create-machines.yaml#L10) and [here](https://github.com/barbacbd/openshift-ansible-assistant/blob/master/playbooks/byoh-prepare.yaml#L11) or the user can set the environment variable `OI_DISTRIBUTION_VERSION` to the version of RHEL (ex: `8.6`).
+
 ### GCP
 
 An ssh key (the same that will be used for installation) should be added to the **entire** project. Follow the [link](https://medium.com/@rajeshkanna_a/google-cloud-platform-adding-or-removing-project-wide-public-ssh-keys-5e3fcf22f75d) for more information. The public key will have a username attached to it, and this username will be later for ssh tasks. _If your installation fails/stalls during ssh tasks, please check the `ansible_user` in `assets/byoh/hosts`_. 
