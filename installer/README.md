@@ -156,3 +156,13 @@ Generally the line will include `oc adm release extract`, but you only need the 
 
 
 If you would like to create a bastion host to reach the rest of the cluster [follow these directions](https://github.com/eparis/ssh-bastion). Do _NOT_ skip the steps for passing your ssh credentials to the other nodes in the cluster or you will not be able to ssh from the bastion to other nodes.
+
+## SSH to Nodes
+
+During installs the bootstrap node may not have the ssh information to create/allow a connection to another node (ex: bootstrap node direct ssh to a control plane node).
+
+```bash
+ssh -A -J <bootstrap-user>@<bootstrap-ip> <control-plane-user>@<control-plane-internal-ip>
+```
+
+_NOTE_: The bootstrap defaults to being cleaned up after the bootstrap process is complete. There are ways to keep the node around.
