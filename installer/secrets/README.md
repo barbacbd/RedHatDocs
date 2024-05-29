@@ -60,3 +60,25 @@ cp pull-secrets.txt ~/oi/pull-secret.json
 
 Run this script everytime that the ci-pull-secret changes.
 
+# Automation
+
+The following block can be used to automate/assist with installs.
+
+```bash
+# This block will attempt to read the config/secret information from /home/$USER/.docker/config.json.
+# The data read will replace the pullSecret in the install-config.yaml file.
+# If the data is older than 25 days then stop the install process.
+
+ftime=`stat -c %Y /home/$USER/.docker/config.json`
+ctime=`date +%s`
+diff=$(( (ctime - ftime) / 86400 ))
+
+if [ "$diff" -ge "25" ]; then
+    echo "Please update your pull secret before proceeding ..."
+    exit 1
+fi
+
+secret=`cat /home/$USER/.docker/config.json`
+export INSTALL_CONFIG_SECRET="'$secret'"
+yq e -i '.pullSecret = env(INSTALL_CONFIG_SECRET)' install-config.yaml
+```
