@@ -11,3 +11,10 @@ The following should be executed before submitting any PR:
 - `make generate` (for api updates)
 - `make lint`
 - `make test`
+
+# Additions to API
+
+If you experience issues with unknown components or components always resulting in `nil` values in CAPG, update the infrastructure components file.
+
+- `make release-manifests`
+
