@@ -18,3 +18,6 @@ If you experience issues with unknown components or components always resulting 
 
 - `make release-manifests`
 
+# New additions
+
+The project is new, and there may be breaking changes. Reach out to the team about possible breaking changes. Also note that in the event that a change could be breaking or experimental you can add experimental api updates to the `exp` directory in the project root.
