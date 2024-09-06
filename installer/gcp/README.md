@@ -24,6 +24,7 @@ This document is put together to assist with information regarding the GCP platf
    * [GCloud CLI Authentication](#gcloud-cli-authentication)
    * [Troubleshooting](#troubleshooting)
       * [Failure During Kube API](#failure-during-kube-api)
+      * [Investigate gcp resource errors](#investigate-gcp-resource-errors)
 
 
 ## IPI Installations 
@@ -476,3 +477,10 @@ If you see the error `Error: unknown flag: --feature-set`, this means that the R
 #### Kube API unreachable
 
 _under construction_
+
+### Investigate gcp resource errors
+
+Errors reported with the following text should be investigated further in the GCP Console. Quotas are project level and can provide more information about errors at the project level. The Log Explorer can be used to view issues/errors at the resource level. See more information [here](https://cloud.google.com/compute/docs/troubleshooting/troubleshooting-resource-availability).
+
+- ZONE_RESOURCE_POOL_EXHAUSTED
+- ZONE_RESOURCE_POOL_EXHAUSTED_WITH_DETAILS
