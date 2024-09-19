@@ -45,6 +45,15 @@ sudo chmod 777 /etc/squid/passwords
 htpasswd -c /etc/squid/passwords $USER
 ```
 
+_Note: The following are valid values for usernames and passwords for the proxy._
+
+```
+A ... Z
+a ... z
+0 ... 9
+- . _ : ~ ! $ & \ ( ) * + , ; = % @
+```
+
 9. Edit squid config file
 
 ```bash
