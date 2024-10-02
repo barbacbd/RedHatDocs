@@ -2,9 +2,15 @@ from fedora:latest
 
 MAINTAINER Brent Barbachem <barbacbd@gmail.com>
 
-# The only versions that this currently supports is the nightly packages.
-ARG INSTALLER_VERSION="4.18.0-0.nightly-2024-09-12-023938"
-
+# The Dockerfile is intended to be used to establish an environment
+# for the openshift installer to run. The user will have to provide
+# the following packages:
+#     openshift-install
+#     oc
+# wget could be used to grab a prepackaged version of the installer
+# and oc. These packages are not grabbed with wget because the
+# exact version to be tested is generally a locally built installer.
+#
 # **IMPORTANT**
 # This dockerfile is intended to be executed from /home/$USER
 # in order to correctly reference the paths relative to the
@@ -55,13 +61,6 @@ RUN cd /Downloads && \
     tar -xvzf openshift-client-linux.tar.gz && \
     mv oc /usr/bin/ && \
     mv kubectl /usr/bin && \
-    cd -
-
-# Grab the openshift installer, unpack it and move it to the bin for use
-RUN cd /Downloads && \
-    wget https://openshift-release-artifacts.apps.ci.l2s4.p1.openshiftapps.com/${INSTALLER_VERSION}/openshift-install-linux-${INSTALLER_VERSION}.tar.gz && \
-    tar -xvzf openshift-install-linux-${INSTALLER_VERSION}.tar.gz && \
-    mv openshift-install /usr/bin/ && \
     cd -
 
 ENV AWS_PROFILE=openshift-dev

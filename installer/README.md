@@ -75,8 +75,6 @@ To run and login to the container:
 docker run -it installer:latest /bin/bash
 ```
 
-Currently, the docker file supports the argument `INSTALLER_VERSION` that can be altered during image building. The value only supports nightly image versions for the openshift installer.
-
 # YAML Configuration
 
 The following parameters are required in the yaml file as inputs to the install-config template:
