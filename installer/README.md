@@ -149,3 +149,49 @@ ssh -A -J <bootstrap-user>@<bootstrap-ip> <control-plane-user>@<control-plane-in
 ```
 
 _NOTE_: The bootstrap defaults to being cleaned up after the bootstrap process is complete. There are ways to keep the node around.
+
+
+## Mirroring a Custom Release Image (GCD Example — OCP 4.22)
+
+### Step 1: Build a Custom Release Image from PRs
+
+Provide a comma-separated list of PRs to the build system to create
+a custom release image:
+
+build 4.22,\
+  openshift/cloud-provider-gcp#141,\
+  openshift/machine-api-provider-gcp#193,\
+  openshift/image-registry#476,\
+  openshift/gcp-pd-csi-driver#129,\
+  openshift/cloud-credential-operator#1083,\
+  openshift/cluster-image-registry-operator#1364,\
+  openshift/cluster-ingress-operator#1564,\
+  openshift/cloud-network-config-controller#264,\
+  openshift/installer#10853
+The build logs will return the resulting release image pullspec, e.g.:
+
+registry.build05.ci.openshift.org/ci-ln-brvibfk/release@sha256:89579091968398dbb3638b0c169dce7f6e0b50e8b48d258907ef00fdfb57420c
+### Step 2: Mirror the Image
+
+Use `oc adm release new` to mirror the built image to the target
+registry:
+
+```bash
+SRC="registry.build05.ci.openshift.org/ci-ln-brvibfk/release@sha256:89579091968398dbb3638b0c169dce7f6e0b50e8b48d258907ef00fdfb57420c"
+
+oc adm release new \
+  --from-release="$SRC" \
+  --mirror=quay.io/openshift-install/gcd-422 \
+  --keep-manifest-list \
+  --to-image=quay.io/openshift-install/gcd:422
+
+
+
+
+| Flag | Description |
+|------|-------------|
+| --from-release | The source release image (from the build step) |
+| --mirror | The mirror location for image content |
+| --keep-manifest-list | Preserves the manifest list for multi-arch support |
+| --to-image | The final destination image tag |
+```
